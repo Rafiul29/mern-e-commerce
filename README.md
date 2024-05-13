@@ -1,3 +1,4 @@
-
 # How to secure API
-xss-clean,express-rate-limit
+express-rate-limit
+
+# MVC (Model views controller) Architecture
