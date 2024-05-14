@@ -2,6 +2,7 @@ const createError = require("http-errors")
 const User = require("../models/userModel");
 const { successResponse } = require("./responseController");
 const { default: mongoose } = require("mongoose");
+const { findUserById } = require("../services/findById");
 
 const getUsers = async (req, res, next) => {
   try {
@@ -59,12 +60,8 @@ const getUsers = async (req, res, next) => {
 const getUser = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const options = { password: 0 }
-
-    const user = await User.findById(id, options)
-    if (!user) {
-      throw createError(404, "User does not exits with this id")
-    }
+    
+    const user= await findUserById(id)
 
     return successResponse(res, {
       statusCode: 200,
