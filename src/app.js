@@ -6,6 +6,7 @@ const createError = require("http-errors")
 const rateLimit=require("express-rate-limit")
 const seedRouter = require("./routes/seedRouter")
 const userRouter = require("./routes/userRouter")
+const { errorResponse } = require("./controllers/responseController")
 
 const app = express()
 
@@ -46,20 +47,9 @@ app.use((req, res, next) => {
 
 // server error handling -> all errors
 app.use((err, req, res, next) => {
-  res.status(err.status || 500)
-  res.json({
-    error: {
-      message: err.message
-    }
-  })
-})
-
-app.use((err, req, res, next) => {
-  res.status(err.status || 500)
-  res.json({
-    error: {
-      message: err.message
-    }
+  return errorResponse(res,{
+    statusCode:err.status,
+    message:err.message,
   })
 })
 
