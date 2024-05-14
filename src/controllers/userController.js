@@ -3,7 +3,7 @@ const User = require("../models/userModel");
 const { successResponse } = require("./responseController");
 const { default: mongoose } = require("mongoose");
 const { findWithId } = require("../services/findItem");
-const fs=require("fs");
+const fs = require("fs");
 
 
 const getUsers = async (req, res, next) => {
@@ -59,11 +59,11 @@ const getUsers = async (req, res, next) => {
 }
 
 // get single user
-const getUser = async (req, res, next) => {
+const getUserById = async (req, res, next) => {
   try {
     const id = req.params.id;
     const options = { password: 0 }
-    const user= await findWithId(id,options)
+    const user = await findWithId(User, id, options)
 
     return successResponse(res, {
       statusCode: 200,
@@ -82,20 +82,20 @@ const getUser = async (req, res, next) => {
 }
 
 // delete user
-const deleteUser = async (req, res, next) => {
+const deleteUserById = async (req, res, next) => {
   try {
     const id = req.params.id;
     const options = { password: 0 }
-    const user= await findWithId(id,options)
+    const user = await findWithId(User, id, options)
 
-    const userImagePath=user.image
+    const userImagePath = user.image
 
-    fs.access(userImagePath,(err)=>{
-      if(err){
+    fs.access(userImagePath, (err) => {
+      if (err) {
         console.log("user image dose not exist")
-      }else{
-        fs.unlink(userImagePath,(err)=>{
-          if(err){
+      } else {
+        fs.unlink(userImagePath, (err) => {
+          if (err) {
             throw err
           }
           console.log("user image was deleted")
@@ -103,12 +103,14 @@ const deleteUser = async (req, res, next) => {
       }
     })
 
-    await User.findByIdAndDelete({_id:id,idAdmin:false})
+    await User.findByIdAndDelete({ _id: id, idAdmin: false })
 
     return successResponse(res, {
       statusCode: 200,
       message: "user was delete successfully",
     })
+
+
   } catch (error) {
     if (error instanceof mongoose.Error) {
       next(createError(400, "Invalid user id"))
@@ -120,4 +122,4 @@ const deleteUser = async (req, res, next) => {
 
 
 
-module.exports = { getUsers, getUser,deleteUser }
+module.exports = { getUsers, getUserById, deleteUserById }
