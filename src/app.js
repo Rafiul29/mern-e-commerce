@@ -20,7 +20,7 @@ const rateLimiter=rateLimit({
 app.use(morgan("dev"))
 app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(rateLimiter)
+// app.use(rateLimiter)
 
 //by pass url
 app.use("/api/seed",seedRouter)

@@ -1,6 +1,7 @@
 const createError = require("http-errors")
 const User = require("../models/userModel");
 const { successResponse } = require("./responseController");
+const { default: mongoose } = require("mongoose");
 
 const getUsers = async (req, res, next) => {
   try {
@@ -31,32 +32,21 @@ const getUsers = async (req, res, next) => {
       throw createError(404, 'no users found')
     }
 
+
     // Set Cache-Control header
     res.header("Cache-Control", "public,max-age=60");
 
-    // res.status(200).json({
-    //   message: "users were returned successfully",
-    //   users,
-    //   pagination: {
-    //     totalPages: Math.ceil(count / limit),
-    //     currentPage: page,
-    //     limit: limit,
-    //     nextPage: page < Math.ceil(count / limit) ? page + 1 : null,
-    //     previousPage: page > 1 ? page - 1 : null,
-    //   }
-    // })
-
-    return successResponse(res,{
-      statusCode:200,
-      message:"users were returned successfully",
-      payload:{
+    return successResponse(res, {
+      statusCode: 200,
+      message: "users were returned successfully",
+      payload: {
         users,
         pagination: {
           totalPages: Math.ceil(count / limit),
           currentPage: page,
           limit: limit,
-          nextPage: page < Math.ceil(count / limit)? page + 1 : null,
-          previousPage: page > 1? page - 1 : null,
+          nextPage: page < Math.ceil(count / limit) ? page + 1 : null,
+          previousPage: page > 1 ? page - 1 : null,
         }
       }
     })
@@ -65,4 +55,31 @@ const getUsers = async (req, res, next) => {
   }
 }
 
-module.exports = { getUsers }
+// get single user
+const getUser = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const options = { password: 0 }
+
+    const user = await User.findById(id, options)
+    if (!user) {
+      throw createError(404, "User does not exits with this id")
+    }
+
+    return successResponse(res, {
+      statusCode: 200,
+      message: "user were returned successfully",
+      payload: {
+        user
+      }
+    })
+  } catch (error) {
+    if (error instanceof mongoose.Error) {
+      next(createError(400, "Invalid user id"))
+      return
+    }
+    next(error)
+  }
+}
+
+module.exports = { getUsers, getUser }
