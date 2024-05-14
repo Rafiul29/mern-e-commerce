@@ -5,6 +5,7 @@ const bodyParser = require("body-parser")
 const createError = require("http-errors")
 const rateLimit=require("express-rate-limit")
 const seedRouter = require("./routes/seedRouter")
+const userRouter = require("./routes/userRouter")
 
 const app = express()
 
@@ -20,8 +21,9 @@ app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(rateLimiter)
 
-
+//by pass url
 app.use("/api/seed",seedRouter)
+app.use("/api/users",userRouter)
 
 
 app.get("/", (req, res) => {

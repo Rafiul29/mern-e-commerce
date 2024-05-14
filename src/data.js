@@ -20,7 +20,14 @@ const data={
       password:"2312eds",
       phone:"2131",
       address:'kushtia bangladesh'
-    }
+    },
+    // {
+    //   name:"Rafiul",
+    //   email:'rafiul@example.com',
+    //   password:"31312412",
+    //   phone:"4124`42",
+    //   address:'Pabna bangladesh'
+    // }
   ]
 }
 
