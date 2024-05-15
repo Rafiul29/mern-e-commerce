@@ -39,6 +39,7 @@ app.get("/api/user", (req, res) => {
   res.status(200).send({ message: " user login api works fine" })
 })
 
+// wbwb amgl mbgj daiw 
 //client error handling
 app.use((req, res, next) => {
   next(createError(404,"route not found"))
