@@ -6,6 +6,7 @@ const { findWithId } = require("../services/findItem");
 const { deleteImage } = require("../helpers/deleteImage");
 const { clientURL, jwtActivityKey } = require("../secret");
 const createJSONWebToken = require("../helpers/jsonwebtoken");
+const emailWithNodeMail = require("../helpers/email");
 const fs = require("fs").promises;
 
 
@@ -134,25 +135,34 @@ const processRegister = async (req, res, next) => {
     }
 
     // crete jwt token
-    const token = createJSONWebToken({ name, email, phone, address, password }, "", '10m')
+    const token = createJSONWebToken({ name, email, phone, address, password }, jwtActivityKey, '10m')
 
     //prepre email
-    // const emailData = {
-    //   email,
-    //   subject: "Account Activation Email",
-    //   html: `
-    //   <h1>Hello ${name}</h1>
-    //   <p>Please click on the link below to <a href="${clientURL}/api/users/activate/${token}" target="_blank">activate your account </a> </p>
-    //   `
-    // }
+    const emailData = {
+      email,
+      subject: "Account Activation Email",
+      html: `
+      <h1>Hello ${name}</h1>
+      <p>Please click on the link below to <a href="${clientURL}/api/users/activate/${token}" target="_blank">activate your account </a> </p>
+      `
+    }
+
+    // send email with nodemailer
+    try{
+       await emailWithNodeMail(emailData)
+    }catch(error){
+        next(createError(500,"Failed to send verification email"))
+        return
+    }
 
     return successResponse(res, {
       statusCode: 200,
-      message: "user was delete successfully",
+      message: `please go to your ${ email} for completing your registration process`,
       payload: {
         token
       }
     })
+   
 
 
   } catch (error) {
