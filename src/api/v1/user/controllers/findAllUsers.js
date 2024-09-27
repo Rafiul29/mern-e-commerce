@@ -1,13 +1,16 @@
 const createError = require("http-errors");
 const User = require("../../../../models/User");
+const services = require("../../../../services");
+const { query } = require("../../../../utlis");
+const defaults = require("../../../../config/defaults");
 
 const findAllUsers = async (req, res, next) => {
   try {
-    const page = +req.query.page || 1;
-    const limit = +req.query.limit || 5;
-    const sortType = req.query.sort_type || "dsc";
-    const sortBy = req.query.sort_by || "updatedAt";
-    const search = req.query.search || "";
+    const page = +req.query.page || defaults.page;
+    const limit = +req.query.limit || defaults.limit;
+    const sortType = req.query.sort_type || defaults.sortType;
+    const sortBy = req.query.sort_by || defaults.sortBy;
+    const search = req.query.search || defaults.search;
 
     const sortStr = `${sortType === "dsc" ? "-" : ""}${sortBy}`;
     const searchReqExp = new RegExp(".*" + search + ".*", "i");
@@ -28,32 +31,58 @@ const findAllUsers = async (req, res, next) => {
       .limit(limit)
       .skip((page - 1) * limit);
 
-    const count = await User.find(filter).countDocuments();
+    // generate response
 
-    if (users.length === 0) {
-      throw createError(404, "no users found");
-    }
-
-    res.status(200).json({
-      message: "users were returned successfully",
-      data: {
-        users,
-        pagination: {
-          totalPages: Math.ceil(count / limit),
-          currentPage: page,
-          limit: limit,
-          nextPage: page < Math.ceil(count / limit) ? page + 1 : null,
-          previousPage: page > 1 ? page - 1 : null,
-        },
-      },
+    //transform items
+    const data = query.getTransformedItems({
+      items: users,
+      selection: [
+        "_id",
+        "name",
+        "email",
+        "phone",
+        "address",
+        "role",
+        "createdAt",
+        "updatedAt",
+        "isBanned",
+        "image",
+      ],
+      path: "/users",
     });
+
+    //total items
+    const totalItems = await services.countDocuments({
+      Model: User,
+      search: filter,
+    });
+
+    // pagination
+    const pagination = query.getPagination({
+      totalItems: totalItems,
+      page: page,
+      limit: limit,
+    });
+
+    //HATEOASLINKS
+    const links = query.getHATEOASForAllItems({
+      url: req.url,
+      path: req.path,
+      query: req.query,
+      hasNext: !!pagination.next,
+      hasPrev: !!pagination.prev,
+      page,
+    });
+
+    const response = { data, pagination, links };
+
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }
 };
 
 module.exports = findAllUsers;
-
 
 // get single user
 const getUserById = async (req, res, next) => {
@@ -116,7 +145,7 @@ const processRegister = async (req, res, next) => {
       address,
       password,
     };
-    
+
     const userExits = await User.exists({ email });
 
     if (userExits) {
