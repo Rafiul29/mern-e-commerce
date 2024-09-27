@@ -6,5 +6,5 @@ const router = express.Router();
 
 
 router.get("/api/v1/users", userControllers.findAllUsers);
-
+router.get("/api/v1/users/:id",userControllers.findSingleUser);
 module.exports = router;
