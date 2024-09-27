@@ -1,12 +1,11 @@
-
 const express = require("express")
 const morgan = require("morgan")
 const bodyParser = require("body-parser")
 const createError = require("http-errors")
 const rateLimit=require("express-rate-limit")
-const seedRouter = require("./routes/seedRouter")
-const userRouter = require("./routes/userRouter")
-const { errorResponse } = require("./controllers/responseController")
+const seedRouter = require("./routes/seed")
+const routers = require("./routes")
+
 
 const app = express()
 
@@ -24,22 +23,15 @@ app.use(express.urlencoded({ extended: true }))
 
 //by pass url
 app.use("/api/seed",seedRouter)
-app.use("/api/users",userRouter)
+app.use(routers)
 
 
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
   res.status(200).send({ message: "Welcome to the server" })
 })
 
-app.get("/test", (req, res) => {
-  res.status(200).send({ message: "test api works fine" })
-})
 
-app.get("/api/user", (req, res) => {
-  res.status(200).send({ message: " user login api works fine" })
-})
 
-// wbwb amgl mbgj daiw 
 //client error handling
 app.use((req, res, next) => {
   next(createError(404,"route not found"))
@@ -47,12 +39,13 @@ app.use((req, res, next) => {
 
 
 // server error handling -> all errors
-app.use((err, req, res, next) => {
-  return errorResponse(res,{
-    statusCode:err.status,
-    message:err.message,
-  })
-})
+app.use((err, _req, res, next) => {
+  console.log(err.message)
+  res.status(err.status || 500).json({
+    message: err.message,
+    errors: err.errors,
+  });
+});
 
 
 module.exports = app

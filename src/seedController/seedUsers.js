@@ -1,7 +1,5 @@
 const data = require("../data");
-const User = require("../models/userModel")
-
-
+const {User} = require("../models")
 
 const seedUser=async(req, res, next) => {
   try{

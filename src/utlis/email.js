@@ -21,7 +21,7 @@ const emailWithNodeMail=async(emailData)=>{
       subject: emailData.subject, // Subject line
       html:emailData.html, // html 
     }
-    console.log("first")
+
     const info = await transporter.sendMail(mailOptions)
 
    }catch(error){
