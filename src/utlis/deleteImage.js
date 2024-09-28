@@ -16,6 +16,4 @@ const deleteImage = async (userImagePath) => {
   //   .catch(err => console.log("user image dose not exist"))
 }
 
-module.exports = {
-  deleteImage
-}
+module.exports = deleteImage

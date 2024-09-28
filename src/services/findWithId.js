@@ -1,21 +1,17 @@
 const { default: mongoose } = require("mongoose");
 const createError = require("http-errors");
+const { notFound } = require(".././utlis/error");
 
 const findWithId = async ({ Model, id, options = {} }) => {
-  try {
+  
     const item = await Model.findById(id, options);
 
     if (!item) {
-      throw createError(404, `${Model.modelName} does not exits with this id`);
+      throw createError(404,'Requested resource Not Found')
+      // createError(404,'Requested resource
     }
 
     return item;
-  } catch (error) {
-    if (error instanceof mongoose.Error) {
-      throw createError(400, `Invalid ${Model.modelName} id`);
-    }
-    throw error;
-  }
 };
 
 module.exports = findWithId;

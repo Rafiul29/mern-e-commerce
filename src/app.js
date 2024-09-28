@@ -40,10 +40,10 @@ app.use((req, res, next) => {
 
 // server error handling -> all errors
 app.use((err, _req, res, next) => {
-  console.log(err.message)
+  console.log(err.message,err.status)
   res.status(err.status || 500).json({
-    message: err.message,
-    errors: err.errors,
+    code: err.status,
+    message: err.message
   });
 });
 

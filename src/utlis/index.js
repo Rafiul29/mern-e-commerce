@@ -1,2 +1,3 @@
 const query=require('./query')
-module.exports={query}
+const deleteImage=require('./deleteImage')
+module.exports={query,deleteImage}
