@@ -17,10 +17,11 @@ const deleteUser = async (req, res, next) => {
     const deleteUser = await User.findByIdAndDelete({ _id: id, role: "user" });
 
     const userImagePath = await deleteImage(user.image);
-    console.log(deleteUser);
+    
     res.status(204).json({
       message: "User delete successfully",
     });
+
   } catch (e) {
     if (e instanceof mongoose.Error) {
       next(createError(400, "Invalid User Id"));

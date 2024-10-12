@@ -2,7 +2,7 @@
   "name": "e-commerce",
   "version": "1.0.0",
   "description": "E-commerce mern stack project",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "start": "node  ./src/index.js",
     "dev": "nodemon ./src/index.js",

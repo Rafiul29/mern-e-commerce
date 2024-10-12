@@ -20,9 +20,9 @@ const findSingleUser = async (req, res, next) => {
 
     res.status(200).json(response);
   } catch (e) {
-    if(e instanceof mongoose.Error){
-      next(createError(400,"Invalid User Id"))
-      return
+    if (e instanceof mongoose.Error) {
+      next(createError(400, "Invalid User Id"));
+      return;
     }
     next(e);
   }

@@ -7,7 +7,7 @@ const findWithId = async ({ Model, id, options = {} }) => {
     const item = await Model.findById(id, options);
 
     if (!item) {
-      throw createError(404,'Requested resource Not Found')
+      throw createError(404,`Requested resource ${Model.modelName} not found with this id`)
       // createError(404,'Requested resource
     }
 
