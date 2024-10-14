@@ -1,41 +1,46 @@
 const createError = require("http-errors");
-const {jwtActivityKey,Client_URL}=require('../../../../secret');
-const {verifyToken,decodeToken}=require('../../../../utlis')
-const User=require('../../../../models/User')
+const { jwtActivityKey, Client_URL } = require("../../../../secret");
+const { verifyToken, decodeToken } = require("../../../../utlis");
+const User = require("../../../../models/User");
 const services = require("../../../../services");
 
 const activatedAccount = async (req, res, next) => {
   const { token } = req.body;
 
   try {
-    if(!token){
-      throw createError(404,'Token not found')
+    if (!token) {
+      throw createError(404, "Token not found");
     }
 
     // token verify
-      const decoded=verifyToken({token,secret:jwtActivityKey})
+    const decoded = verifyToken({ token, secret: jwtActivityKey });
 
-      if(!decoded){
-        throw createError(401, "User was not able to verified");
-      }
+    if (!decoded) {
+      throw createError(401, "User was not able to verified");
+    }
 
-      const newUser = {
-        name:decoded.name,
-        email:decoded.email,
-        phone:decoded.phone,
-        address:decoded.address,
-        password:decoded.password,
-        status:'approved'
-      };
-  
-      const userExits = await services.existingItem({ Model: User, email:decoded.email });
+    const newUser = {
+      name: decoded.name,
+      email: decoded.email,
+      phone: decoded.phone,
+      address: decoded.address,
+      password: decoded.password,
+      status: "approved",
+    };
 
-      if (userExits) {
-        throw createError(409, "User with this email already exists. Please sign in");
-      }
-    
+    const userExits = await services.existingItem({
+      Model: User,
+      email: decoded.email,
+    });
 
-    const user = new User(newUser)
+    if (userExits) {
+      throw createError(
+        409,
+        "User with this email already exists. Please sign in"
+      );
+    }
+
+    const user = new User(newUser);
     user.save();
 
     res.status(201).json({
