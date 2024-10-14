@@ -4,6 +4,8 @@ const express = require("express");
 const { controllers: authControllers } = require("../api/v1/auth");
 const { controllers: userControllers } = require("../api/v1/user");
 
+const { authValidator, runValidator } = require("../validators");
+
 // middlewares
 const { uploadFile } = require("../middleware/file");
 
@@ -16,6 +18,8 @@ const uploadUserFile = uploadFile("users");
 router.post(
   "/api/v1/auth/register-process",
   uploadUserFile.single("image"),
+  authValidator.validateUserRegistration,
+  runValidator,
   authControllers.registerProcess
 );
 
