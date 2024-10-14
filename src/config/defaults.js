@@ -14,7 +14,7 @@ const config = {
   JWT_SECRET_KEY: "qwdqdqefqfqeWDQ@!#@!#$!#$",
   UPLOAD_DIRECTORY: "public/images",
   MAX_FILE_SIZE: 2097152,
-  ALLOWED_FILE_TYPES: ['jpg','jpeg','png'],
+  ALLOWED_FILE_TYPES: ['image/jpg','image/jpeg','image/png'],
 };
 
 module.exports = Object.freeze(config);

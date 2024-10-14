@@ -26,6 +26,7 @@ const activatedAccount = async (req, res, next) => {
       address: decoded.address,
       password: decoded.password,
       status: "approved",
+      image:decoded.image
     };
 
     const userExits = await services.existingItem({

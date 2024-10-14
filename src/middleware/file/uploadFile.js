@@ -8,6 +8,7 @@ const {
 } = require("../../config/defaults");
 
 const uploadFile = (subDir = "") => {
+
   const UPLOAD_DIR = `${UPLOAD_DIRECTORY}/${subDir}`;
 
   const storage = multer.diskStorage({
@@ -17,8 +18,11 @@ const uploadFile = (subDir = "") => {
     filename: function (req, file, cb) {
       const extname = path.extname(file.originalname);
       const filename =
-        Date.now() + "-" + file.originalname.replace(extname, "") + extname;
-      cb(null, filename);
+        Date.now() + "-" + file.originalname.replace(extname, "")
+        .toLowerCase()
+        .split(" ")
+        .join("-")
+      cb(null, filename+extname);
     },
   });
 
@@ -31,9 +35,9 @@ const uploadFile = (subDir = "") => {
 };
 
 const fileFilter = (req, file, cb) => {
-  const extname = path.extname(file.originalname);
-  if (!ALLOWED_FILE_TYPES.includes(extname.substring(1))) {
-    return cb(createError(400, `${extname} file type not allowed`));
+  // const extname = path.extname(file.originalname);
+  if (!ALLOWED_FILE_TYPES.includes(file.mimetype)) {
+    return cb(createError(400, `${file.mimetype} file type not allowed`));
   }
   cb(null, true);
 };
