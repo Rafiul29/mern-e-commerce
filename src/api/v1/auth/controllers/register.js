@@ -14,8 +14,8 @@ const registerProcess = async (req, res, next) => {
       phone,
       address,
       password,
+     
     };
-
     const userExits = await services.existingItem({ Model: User, email });
 
     if (userExits) {
