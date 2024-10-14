@@ -17,6 +17,8 @@ const validateUserRegistration = [
     .trim()
     .notEmpty()
     .withMessage("Password is required")
+    .isStrongPassword()
+    .withMessage("Password should be at least 8 characters long")
     .isLength({ min: 8 })
     .withMessage("Password should be at least 8 characters long")
     .matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})")
@@ -29,8 +31,18 @@ const validateUserRegistration = [
     .withMessage("Address is required")
     .isLength({ min: 3, max: 31 })
     .withMessage("Address should be 3 characters long"),
-  body("phone").trim().notEmpty().withMessage("Phone is required"),
-  body("image").optional().isString().withMessage("Image is required"),
+  body("phone")
+    .isMobilePhone("bn-BD", {
+      strictMode: true,
+    })
+    .withMessage("Mobile number must be a valid Bangladeshi mobile number")
+    .trim()
+    .notEmpty()
+    .withMessage("Phone is required"),
+  body("image")
+    .optional()
+    .isString()
+    .withMessage("Image is required"),
 ];
 
 module.exports = { validateUserRegistration };
