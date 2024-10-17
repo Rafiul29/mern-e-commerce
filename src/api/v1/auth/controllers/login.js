@@ -31,21 +31,28 @@ const login = async (req, res, next) => {
     if (user.isBanned) {
       throw createError(404, "You are Banned. Please contact authority ");
     }
+    const userInfo = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+      status: user.status,
+      isBanned: user.isBanned,
+    };
+    const accessToken = createJSONWebToken(userInfo, jwtAccessKey, "10m");
 
-    const accessToken = createJSONWebToken({ ...user }, jwtAccessKey, "10m");
-
-     // token, cookie
-    res.cookie("access_token", accessToken, {
+    // token, cookie
+    res.cookie("accessToken", accessToken, {
       maxAge: 15 * 60 * 1000,
       httpOnly: true,
       secure: true,
       sameSite: "none",
     });
-   
 
     //response generate
     res.status(200).json({
-      message: "Registration successfully",
+      message: "Login successfully",
     });
   } catch (error) {
     next(error);
