@@ -1,9 +1,9 @@
 const countDocuments = require("./countDocument");
 const findWithId = require("./findWithId");
-const existingItem = require("./existingItem");
+const findItem = require("./findItem");
 
 module.exports = {
   countDocuments,
   findWithId,
-  existingItem,
+  findItem,
 };

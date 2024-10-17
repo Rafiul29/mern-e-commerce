@@ -29,7 +29,7 @@ const activatedAccount = async (req, res, next) => {
       image:decoded.image
     };
 
-    const userExits = await services.existingItem({
+    const userExits = await services.findItem({
       Model: User,
       email: decoded.email,
     });

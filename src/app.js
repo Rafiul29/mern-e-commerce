@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
+var cookieParser = require('cookie-parser')
 const bodyParser = require("body-parser");
 const createError = require("http-errors");
 const rateLimit = require("express-rate-limit");
@@ -19,6 +20,7 @@ const rateLimiter = rateLimit({
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
 // app.use(rateLimiter)
 
 //by pass url

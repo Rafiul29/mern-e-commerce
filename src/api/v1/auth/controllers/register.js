@@ -20,7 +20,7 @@ const registerProcess = async (req, res, next) => {
     if (image & (image.size > 1024 * 1024 * 2)) {
       throw createError(400, "File to large. It must be less than 2MB");
     }
-    const userExits = await services.existingItem({ Model: User, email });
+    const userExits = await services.findItem({ Model: User, email });
 
     if (userExits) {
       throw createError(409, "Email Already Exists");

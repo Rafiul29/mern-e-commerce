@@ -22,9 +22,8 @@ router.post(
   runValidator,
   authControllers.registerProcess
 );
-
 router.post("/api/v1/auth/activate", authControllers.activatedAccount);
-router.post("/api/v1/auth/login");
+router.post("/api/v1/auth/login",authControllers.login);
 
 //users routes
 router.route("/api/v1/users").get(userControllers.findAllUsers);

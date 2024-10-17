@@ -10,6 +10,7 @@ const smtpPassword = process.env.SMTP_PASSWORD || defaults.SMTP_PASSWORD;
 const clientURL = process.env.CLIENT_URL || defaults.CLIENT_URL;
 const jwtActivityKey = process.env.JWT_SECRET_KEY || defaults.JWT_SECRET_KEY;
 const Client_URL = process.env.CLIENT_URL || "";
+const jwtAccessKey=process.env.JWT_ACCESS_KEY || defaults.JWT_ACCESS_KEY
 // const uploadDir = process.env.UPLOAD_DIRECTORY || "public/images";
 // const maxFileSize = Number(process.env.MAX_FILE_SIZE) || 2097152;
 // const allowFileType = process.env.ALLOWED_FILE_TYPES || ["jpg", "jpeg", "png"];
@@ -22,5 +23,6 @@ module.exports = {
   smtpPassword,
   clientURL,
   jwtActivityKey,
-  Client_URL
+  Client_URL,
+  jwtAccessKey
 };
