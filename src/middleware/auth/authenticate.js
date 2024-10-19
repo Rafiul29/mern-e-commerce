@@ -25,8 +25,9 @@ const authenticate = async (req, res, next) => {
       next(createError(401, "User not found"));
       return
     }
-    req.user = user;
-  
+
+    req.user = decoded;
+
     next();
   } catch (e) {
     next(e.message)

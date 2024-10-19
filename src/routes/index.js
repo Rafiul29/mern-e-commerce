@@ -29,6 +29,8 @@ router.post(
 router.post("/api/v1/auth/activate", authControllers.activatedAccount);
 router.post(
   "/api/v1/auth/login",
+  authValidator.validateUserLogin,
+  runValidator,
   authMiddleWare.isLoggedOut,
   authControllers.login
 );
@@ -42,7 +44,11 @@ router.post(
 //users routes
 router
   .route("/api/v1/users")
-  .get(authMiddleWare.authenticate, userControllers.findAllUsers);
+  .get(
+    authMiddleWare.authenticate,
+    authMiddleWare.isAdmin,
+    userControllers.findAllUsers
+  );
 
 router
   .route("/api/v1/users/:id")

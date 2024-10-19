@@ -39,8 +39,9 @@ const login = async (req, res, next) => {
       role: user.role,
       status: user.status,
       isBanned: user.isBanned,
+      isAdmin: user.isAdmin,
     };
-    const accessToken = createJSONWebToken(userInfo, jwtAccessKey, "10m");
+    const accessToken = createJSONWebToken(userInfo, jwtAccessKey, "15m");
 
     // token, cookie
     res.cookie("accessToken", accessToken, {
