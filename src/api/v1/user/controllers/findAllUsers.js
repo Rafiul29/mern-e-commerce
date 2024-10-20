@@ -1,4 +1,5 @@
 const User = require("../../../../models/User");
+const userServices = require("../../../../services/user");
 const services = require("../../../../services");
 const { query } = require("../../../../utlis");
 const defaults = require("../../../../config/defaults");
@@ -11,7 +12,6 @@ const findAllUsers = async (req, res, next) => {
     const sortBy = req.query.sort_by || defaults.sortBy;
     const search = req.query.search || defaults.search;
 
-    const sortStr = `${sortType === "dsc" ? "-" : ""}${sortBy}`;
     const searchReqExp = new RegExp(".*" + search + ".*", "i");
 
     const filter = {
@@ -23,15 +23,15 @@ const findAllUsers = async (req, res, next) => {
       ],
     };
 
-    const options = { password: 0 };
-
-    const users = await User.find(filter, options)
-      .sort(sortStr)
-      .limit(limit)
-      .skip((page - 1) * limit);
+    const users = await userServices.findAll({
+      sortBy,
+      sortType,
+      limit,
+      page,
+      filter,
+    });
 
     // generate response
-
     //transform items
     const data = query.getTransformedItems({
       items: users,
@@ -82,4 +82,3 @@ const findAllUsers = async (req, res, next) => {
 };
 
 module.exports = findAllUsers;
-

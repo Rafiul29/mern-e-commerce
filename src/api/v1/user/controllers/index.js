@@ -1,7 +1,7 @@
 const findAllUsers =require('./findAllUsers')
 const findSingleUser=require('./findSingleUser')
 const removeUser=require('./removeUser')
-const banUser=require('./banUser')
-const unBanUser=require('./unBanUser')
+const manageUserStatus=require('./manageUserStatus')
 
-module.exports={findAllUsers,findSingleUser,removeUser,banUser,unBanUser}
+
+module.exports={findAllUsers,findSingleUser,removeUser,manageUserStatus,}

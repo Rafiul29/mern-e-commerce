@@ -1,19 +1,18 @@
 const { default: mongoose } = require("mongoose");
 const createError = require("http-errors");
-
-const User = require("../../../../models/User");
-const services = require("../../../../services");
+const userServices = require("../../../../services/user");
 
 const findSingleUser = async (req, res, next) => {
   const { id } = req.params;
   const options = { password: 0 };
+
   try {
-    const user = await services.findWithId({ Model: User, id: id, options });
+    const user = await userServices.findSingleItem({id,options});
 
     // generate response
     const response = {
       data: {
-        ...user._doc,
+        ...user,
         link: req.url,
       },
     };
