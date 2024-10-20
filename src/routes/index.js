@@ -55,4 +55,18 @@ router
   .get(userControllers.findSingleUser)
   .delete(userControllers.removeUser);
 
+router.put(
+  "/api/v1/users/ban-user/:id",
+  authMiddleWare.authenticate,
+  authMiddleWare.isAdmin,
+  userControllers.banUser
+);
+
+router.put(
+  "/api/v1/users/unban-user/:id",
+  authMiddleWare.authenticate,
+  authMiddleWare.isAdmin,
+  userControllers.unBanUser
+);
+
 module.exports = router;

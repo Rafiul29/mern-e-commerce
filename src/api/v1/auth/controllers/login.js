@@ -12,7 +12,7 @@ const login = async (req, res, next) => {
 
     // isExits
     const user = await services.findItem({ Model: User, email });
-
+  
     if (!user) {
       throw createError(
         404,
@@ -54,6 +54,8 @@ const login = async (req, res, next) => {
     //response generate
     res.status(200).json({
       message: "Login successfully",
+      user:userInfo
+
     });
   } catch (error) {
     next(error);

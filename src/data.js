@@ -3,28 +3,28 @@ const data={
     {
       name:"John",
       email:'john@example.com',
-      password:"password",
+      password:"Rafi@#12",
       phone:"23213231",
       address:'dhaka bangladesh'
     },
     {
       name:"rator",
       email:'rator@example.com',
-      password:"weqew",
+      password:"Rafi@#12",
       phone:"32123123",
       address:'rajshahi bangladesh'
     },
     {
       name:"pavel",
       email:'pavel@example.com',
-      password:"2312eds",
+      password:"Rafi@#12",
       phone:"2131",
       address:'kushtia bangladesh'
     },
     {
       name:"Rafiul",
       email:'rafiul@example.com',
-      password:"31312412",
+      password:"Rafi@#12",
       phone:"4124`42",
       address:'Pabna bangladesh'
     }
