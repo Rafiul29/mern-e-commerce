@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "up": "bash upgrade.sh"
   },
   "keywords": [
     "ecommerce",
@@ -34,6 +36,11 @@
     "nodemon": "^3.1.7"
   },
   "engines": {
-    "node": ">=14.20.1"
+    "node": ">=18"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": ".husky/pre-commit"
+    }
   }
 }
