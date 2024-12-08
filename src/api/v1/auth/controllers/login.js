@@ -12,7 +12,7 @@ const login = async (req, res, next) => {
 
     // isExits
     const user = await services.findItem({ Model: User, email });
-  
+
     if (!user) {
       throw createError(
         404,
@@ -41,21 +41,32 @@ const login = async (req, res, next) => {
       isBanned: user.isBanned,
       isAdmin: user.isAdmin,
     };
-    const accessToken = createJSONWebToken(userInfo, jwtAccessKey, "15m");
 
+    // accessToken
+    const accessToken = createJSONWebToken(userInfo, jwtAccessKey, "1m");
+    15
     // token, cookie
     res.cookie("accessToken", accessToken, {
-      maxAge: 15 * 60 * 1000,
+      maxAge: 1 * 60 * 1000,
       httpOnly: true,
       secure: true,
       sameSite: "none",
     });
 
+    // refreshToken
+    const refreshToken = createJSONWebToken(userInfo, jwtAccessKey, "7d");
+
+    // token, cookie
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     //response generate
     res.status(200).json({
       message: "Login successfully",
-      user:userInfo
-
+      user: userInfo,
     });
   } catch (error) {
     next(error);
